@@ -8,7 +8,6 @@ from dash import Input, Output, dcc, html, dash_table, State
 import pickle
 import json
 from utils import *
-#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
 #from pyspark.sql import SparkSession
 
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
