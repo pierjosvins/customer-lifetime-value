@@ -1,0 +1,7 @@
+#table button.export {
+    display: none;
+}
+
+#modal-recommendation {
+  background-color: rgba(0,0,0,0.85);
+}
