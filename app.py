@@ -391,7 +391,7 @@ app.layout = dbc.Container(
                                    dbc.Col(
                                          dbc.Card([
                                                   html.H4(id="expected-value"),
-                                                  html.H6("Value Expected From These Customers"),
+						  dbc.Label(html.B("Value Expected From These Customers")),
                                                   
                                          ],
                                          className="shadow rounded align-items-center justify-content-center p-2 mb-2"),
@@ -400,7 +400,7 @@ app.layout = dbc.Container(
                                    dbc.Col(
                                          dbc.Card([
                                                   html.H4(id="expected-pct"),
-                                                  html.H6("Total Value Expected"),
+                                                  dbc.Label(html.B("Total Value Expected")),
                                                   
                                          ],
                                          className="shadow rounded align-items-center justify-content-center p-2 mb-2"),
