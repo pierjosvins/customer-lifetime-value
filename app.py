@@ -47,7 +47,7 @@ filters = dbc.Card(
 		
 		dbc.Col(html.Div(
 		    [
-		        dbc.Label("Likely to buy in the next 80 days"),
+		        dbc.Label("Likely to buy"),
 			dcc.RangeSlider(id='prob', min=0., max=pred_data.ProbBuy.max(), step=0.01,
                                  value=[0., pred_data.ProbBuy.max()], tooltip={"placement": "bottom", "always_visible": True}, 
                                  marks={0.: '0.0', pred_data.ProbBuy.max(): str(pred_data.ProbBuy.max().round(2))}),
@@ -55,7 +55,7 @@ filters = dbc.Card(
 		)),
 		dbc.Col(html.Div(
 		    [
-		        dbc.Label("Value to generate in the next 80 days"),
+		        dbc.Label("Value to generate"),
 			dcc.RangeSlider(id='pred-value', min=0.0, max=pred_data.PredictedCLV.max(),
                                  value=[0., pred_data.PredictedCLV.max()], tooltip={"placement": "bottom", "always_visible": True},
                                  marks={pred_data.PredictedCLV.min(): '$' + str(0.0), pred_data.PredictedCLV.max(): '$' + str(pred_data.PredictedCLV.max().round(2))}),
