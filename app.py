@@ -81,6 +81,7 @@ table = dash_table.DataTable(
     filter_action='custom',
     filter_query='',
     page_action='none',
+    fixed_rows={'headers': True},
     style_table={'height': '400px', 'overflowY': 'auto'},
     style_data_conditional=[
         {
@@ -276,6 +277,7 @@ details_table = dash_table.DataTable(
 		    	filter_action='custom',
 		    	filter_query='',
                         page_action='none',
+	                fixed_rows={'headers': True},
                         style_table={'height': '400px', 'overflowY': 'auto'},
 		    	style_data_conditional=[
 				{
@@ -293,6 +295,7 @@ recommendation_table = dash_table.DataTable(
 		    	filter_action='custom',
 		    	filter_query='',
                         page_action='none',
+			fixed_rows={'headers': True},
                         style_table={'height': '400px', 'overflowY': 'auto'},
 		    	style_data_conditional=[
 				{
