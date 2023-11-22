@@ -7,7 +7,10 @@ from dash import Input, Output, dcc, html, dash_table, State
 
 import pickle
 import json
+from datetime import datetime
+
 from utils import *
+#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
 #from pyspark.sql import SparkSession
 
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates/dbc.min.css"
@@ -47,20 +50,20 @@ filters = dbc.Card(
 		
 		dbc.Col(html.Div(
 		    [
-		        dbc.Label("Likely to buy"),
+		        dbc.Label("Likelihood of buying"),
 			dcc.RangeSlider(id='prob', min=0., max=pred_data.ProbBuy.max(), step=0.01,
                                  value=[0., pred_data.ProbBuy.max()], tooltip={"placement": "bottom", "always_visible": True}, 
                                  marks={0.: '0.0', pred_data.ProbBuy.max(): str(pred_data.ProbBuy.max().round(2))}),
 		    ]
-		)),
+		), md="6"),
 		dbc.Col(html.Div(
 		    [
-		        dbc.Label("Value to generate"),
+		        dbc.Label("Value to be generated"),
 			dcc.RangeSlider(id='pred-value', min=0.0, max=pred_data.PredictedCLV.max(),
                                  value=[0., pred_data.PredictedCLV.max()], tooltip={"placement": "bottom", "always_visible": True},
                                  marks={pred_data.PredictedCLV.min(): '$' + str(0.0), pred_data.PredictedCLV.max(): '$' + str(pred_data.PredictedCLV.max().round(2))}),
 		    ]
-		)),
+		), md="6"),
 	    ]),
     ],
     className="shadow rounded",
@@ -77,9 +80,8 @@ table = dash_table.DataTable(
     selected_rows = [],
     filter_action='custom',
     filter_query='',
-    page_size = 9,
-    export_format="xlsx",
-    export_headers="display",
+    page_action='none',
+    style_table={'height': '400px', 'overflowY': 'auto'},
     style_data_conditional=[
         {
             'if': {'row_index': 'odd'},
@@ -273,7 +275,8 @@ details_table = dash_table.DataTable(
     			sort_mode="multi",
 		    	filter_action='custom',
 		    	filter_query='',
-		    	page_size = 12,
+                        page_action='none',
+                        style_table={'height': '400px', 'overflowY': 'auto'},
 		    	style_data_conditional=[
 				{
 			    	'if': {'row_index': 'odd'},
@@ -289,7 +292,8 @@ recommendation_table = dash_table.DataTable(
     			sort_mode="multi",
 		    	filter_action='custom',
 		    	filter_query='',
-		    	page_size = 12,
+                        page_action='none',
+                        style_table={'height': '400px', 'overflowY': 'auto'},
 		    	style_data_conditional=[
 				{
 			    	'if': {'row_index': 'odd'},
@@ -307,15 +311,18 @@ recommendation_modal = html.Div(
             [
                 dbc.ModalHeader(dbc.ModalTitle("Product Recommendation Per Customer"), close_button=True),
                 dbc.ModalBody([
+			
 			recommendation_table,
 		]),
-                dbc.ModalFooter(
-		    dbc.Button(
-			        "Close",
-			        id="close-recommendation",
-			        className="md-auto btn-info",
-			        n_clicks=0,
-				)),
+                dbc.ModalFooter([
+                    html.Div([
+				html.Button("Download Recommendation", className="btn btn-md btn-info mb-1", id="download-recommendation", n_clicks=0),
+				dcc.Download(id="download-product-recommendation"),
+                                dbc.Button("Close",id="close-recommendation",className="md-auto btn-info",n_clicks=0,)
+				], className='ml-4 d-grid gap-2 d-flex justify-content-between align-items-center'),
+
+		    
+		    ]),
             ],
             id="modal-recommendation",
             size="xl",
@@ -376,9 +383,9 @@ app.layout = dbc.Container(
                                           dbc.Checklist(options=[{"value": 1},], id="select-all-button"),
                                           html.Div(details_modal, id="display-details-button", style= {'display': 'none'}),
 					], className='mx-2 d-grid gap-2 d-flex align-items-center'),
-                                        html.Button("Export Data", className="btn btn-md btn-info mb-1", id="download-button", **{"data-dummy": ""}, n_clicks=0),
+                                        html.Button("Export Data", className="btn btn-md btn-info mb-1", id="download-button", n_clicks=0), dcc.Download(id="download-clv-prediction"),
 				      ], className='ml-4 d-grid gap-2 d-flex justify-content-between align-items-center'),
-                                      html.Div(table, style={'Height': '400px', 'Width': '100%','overflow': 'auto'}), 
+                                      html.Div(table, style={'Height': '10%', 'Width': '100%','overflow': 'auto'}), 
                                       modal], className="shadow rounded p-2")),
                           
 			]),
@@ -391,23 +398,20 @@ app.layout = dbc.Container(
                                    dbc.Col(
                                          dbc.Card([
                                                   html.H4(id="expected-value"),
-						  dbc.Label(html.B("Value Expected From These Customers")),
+                                                  html.H6("Total Expected Value"),
                                                   
                                          ],
-                                         className="shadow rounded align-items-center justify-content-center p-2 mb-2"),
-                                         md="6",
-                                   ),
+                                         className="shadow rounded align-items-center justify-content-center p-2 mb-2"), md="6",),
                                    dbc.Col(
                                          dbc.Card([
                                                   html.H4(id="expected-pct"),
-                                                  dbc.Label(html.B("Total Value Expected")),
+                                                  html.H6("Pct Expected Value"),
                                                   
                                          ],
-                                         className="shadow rounded align-items-center justify-content-center p-2 mb-2"),
-                                          md="6",
-                                    )], 
-                                   align="center", className="mb-1"),
-                          dbc.Col(dbc.Card([html.Div(dcc.Graph(id="cluster-graph", ), className="w-100 h-100"), modal_marketing], className="shadow rounded p-2")),
+                                         className="shadow rounded align-items-center justify-content-center p-2 mb-2"), md="6",)
+				   ], align="center", className="mb-1 align-items-center"),
+
+                          dbc.Col(dbc.Card([html.Div(dcc.Graph(id="cluster-graph", responsive="auto", style={'Width': '100%', 'Height': '100%'}), ), modal_marketing], className="shadow rounded p-2")),
                           dbc.Col(dbc.Card([
                                                   html.Span(["Developped by: ", html.B(html.A("Pierjos Francis COLERE MBOUKOU", href="https://www.linkedin.com/in/pierjos-colere/", target="_blank")), ". See his ", html.A("LinkedIn", href="https://www.linkedin.com/in/pierjos-colere/", target="_blank")]),
                                          ],
@@ -443,7 +447,7 @@ def make_graph(y, x):
     except:
        plot_data = pred_data.copy()
 
-    layout = {"xaxis": {"title": "Value to generate in the next 80 days"}, "yaxis": {"title": "Likely to buy in the next 80 days"}}
+    layout = {"xaxis": {"title": "Value to be generated in the next 80 days"}, "yaxis": {"title": "Likelihood of buying in the next 80 days"}}
     fig = px.scatter(
 	    plot_data,
             x=plot_data.loc[:, "PredictedCLV"],
@@ -453,9 +457,9 @@ def make_graph(y, x):
             hover_data=["CustomerID", "Recency", "Frequence", "MonetarySum", "MonetaryMean"]
         )
 
-    fig.update_xaxes(title_text = "Value to generate in the next 80 days")
-    fig.update_yaxes(title_text = "Likely to buy in the next 80 days")
-    fig.update_layout(clickmode='event+select', autosize=False, width=650, height=450,)
+    fig.update_xaxes(title_text = "Value to be generate in the next 80 days")
+    fig.update_yaxes(title_text = "Likelihood of buying in the next 80 days")
+    fig.update_layout(clickmode='event+select',)
     
     total_expected_value = "$" + str(plot_data.ExpectedValue.sum().round(2))
     pct_expected_value = str(np.round(100 * plot_data.ExpectedValue.sum()/pred_data.ExpectedValue.sum(), 2)) + "%"
@@ -695,19 +699,32 @@ def show_recommendation(selected_rows, data):
     else:
       return {}
 
-
-app.clientside_callback(
-    """
-    function(n_clicks) {
-        if (n_clicks > 0)
-            document.querySelector("#table button.export").click()
-        return ""
-    }
-    """,
-    Output("download-button", "data-dummy"),
-    [Input("download-button", "n_clicks")]
+@app.callback(
+    Output("download-clv-prediction", "data"),
+    State("table","data"),
+    Input("download-button", "n_clicks"),
+    prevent_initial_call=True,
 )
+def download_prediction(data_json, n_clicks):
+    df = pd.DataFrame.from_records(data_json)
+    now = datetime.now()
+    dt_string = now.strftime("%d-%m-%Y-%H-%M-%S")
+    filename="CLV-Prediction-" + dt_string + ".xlsx"
+    return dcc.send_data_frame(df.to_excel,  filename, index=False, sheet_name="CLV Prediction")
 
+
+@app.callback(
+    Output("download-product-recommendation", "data"),
+    State("recommendation-table","data"),
+    Input("download-recommendation", "n_clicks"),
+    prevent_initial_call=True,
+)
+def download_recommendation(data_json, n_clicks):
+    df = pd.DataFrame.from_records(data_json)
+    now = datetime.now()
+    dt_string = now.strftime("%d-%m-%Y-%H-%M-%S")
+    filename="Product-Recommendation-" + dt_string + ".xlsx"
+    return dcc.send_data_frame(df.to_excel,  filename, index=False, sheet_name="Product Recommendation")
 
 
 
