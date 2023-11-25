@@ -6,6 +6,7 @@ The application focuses on anticipating Customer Lifetime Value (CLV) and tailor
 
 The inspiration for this project came from the insightful book "Marketing 5.0: Technology for Humanity" by Philip Kotler, Hermawan Kartajaya, and Iwan Setiawan. 
 Exploring concepts at the intersection of marketing and data science, the team was particularly captivated by the concept of CLV as a key indicator for effective marketing strategies.
+[Customer Lifetime Value Prediction app](https://customer-lifetime-value.onrender.com/)
 
 ## Key Features
 
@@ -28,7 +29,7 @@ Exploring concepts at the intersection of marketing and data science, the team w
 
 - [Pierjos Francis COLERE MBOUKOU](https://github.com/pierjosvins)
 - [Toua Innocent TIA](https://github.com/Centino00)
-- Keita Oumar
+- [Keita Oumar](https://github.com/oumarkei)
 ## How to Use
 
 1. Clone the repository.
