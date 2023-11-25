@@ -84,7 +84,7 @@ table = dash_table.DataTable(
     fixed_rows={'headers': True},
     style_table={'maxHeight': '400px', 'overflowY': 'auto', 'overflowX': 'auto'},
     style_cell={
-        'minWidth': 100,
+        'minWidth': 120,
     },
     style_data_conditional=[
         {
@@ -281,7 +281,10 @@ details_table = dash_table.DataTable(
 		    	filter_query='',
                         page_action='none',
 	                fixed_rows={'headers': True},
-                        style_table={'height': '400px', 'overflowY': 'auto'},
+                        style_table={'maxHeight': '400px', 'overflowY': 'auto', 'overflowX': 'auto'},
+			style_cell={
+			        'minWidth': 120,
+			},
 		    	style_data_conditional=[
 				{
 			    	'if': {'row_index': 'odd'},
@@ -299,7 +302,10 @@ recommendation_table = dash_table.DataTable(
 		    	filter_query='',
                         page_action='none',
 			fixed_rows={'headers': True},
-                        style_table={'height': '400px', 'overflowY': 'auto'},
+                        style_table={'maxHeight': '400px', 'overflowY': 'auto', 'overflowX': 'auto'},
+			style_cell={
+			        'minWidth': 120,
+			},
 		    	style_data_conditional=[
 				{
 			    	'if': {'row_index': 'odd'},
