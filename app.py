@@ -82,7 +82,10 @@ table = dash_table.DataTable(
     filter_query='',
     page_action='none',
     fixed_rows={'headers': True},
-    style_table={'height': '400px', 'overflowY': 'auto'},
+    style_table={'height': '400px', 'overflowY': 'auto', 'overflowX': 'auto'},
+    style_cell={
+        'minWidth': 95, 'maxWidth': 95, 'width': 95
+    }
     style_data_conditional=[
         {
             'if': {'row_index': 'odd'},
